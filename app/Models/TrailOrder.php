@@ -25,4 +25,12 @@ class TrailOrder extends Model
     {
         return $this->photo_display_of_battu ? Storage::url($this->photo_display_of_battu) : null;
     }
+    public function shop()
+    {
+        return $this->belongsTo(SurveyVisit::class, 'shop_id');
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

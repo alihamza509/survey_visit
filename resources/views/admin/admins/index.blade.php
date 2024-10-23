@@ -1,11 +1,13 @@
 @extends('admin.app')
 <meta name="csrf-token" content="{{ csrf_token() }}">
+<meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Added for mobile responsiveness -->
 @section('content')
 <div class="content-header-left col-md-9 col-12 mb-2">
     <div class="row breadcrumbs-top">
         <div class="col-12">
-            <div class="breadcrumb-wrapper col-12">
-                <h3 class="content-header-title float-left mb-0">View Admin Users</h3>
+           
+                <h3 class="content-header-title float-left mb-0">Staff Users</h3>
+                <div class="breadcrumb-wrapper col-12">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ url('/') }}">Dashboard</a></li>
                     <li class="breadcrumb-item">User Management</li>
@@ -19,9 +21,9 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header d-flex justify-content-between">
                     <h4 class="card-title">Staff Users</h4>
-                    <button class="btn btn-primary float-right" data-toggle="modal" data-target="#addEditUserModal">Add Staff</button>
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#addEditUserModal">Add Staff</button>
                 </div>
                 <div class="card-content">
                     <div class="card-body card-dashboard">
@@ -44,7 +46,7 @@
 </section>
 <!-- Add/Edit User Modal -->
 <div class="modal fade" id="addEditUserModal" tabindex="-1" role="dialog" aria-labelledby="addEditUserModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document"> <!-- Added modal-lg for larger screens -->
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addEditUserModalLabel">Add/Edit User</h5>
@@ -53,7 +55,6 @@
                 </button>
             </div>
             <div class="modal-body">
-                <!-- Form for adding/editing user details -->
                 <form id="addEditUserForm">
                     <div class="form-group">
                         <label for="userName">Name</label>
@@ -62,7 +63,7 @@
                     <div class="form-group">
                         <label for="userEmail">Email</label>
                         <input type="email" class="form-control" id="userEmail" name="email" required>
-                        <input type="hidden" class="form-control" id="userRole" name="role" value="staff" >
+                        <input type="hidden" class="form-control" id="userRole" name="role" value="staff">
                     </div>
                     <div class="form-group">
                         <label for="userPassword">Password</label>
@@ -72,7 +73,7 @@
                         <label for="userConfirmPassword">Confirm Password</label>
                         <input type="password" class="form-control" id="userConfirmPassword" name="password_confirmation" required>
                     </div>
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-primary btn-block">Save</button> <!-- Full width button on small screens -->
                 </form>
             </div>
         </div>
@@ -102,14 +103,13 @@
                     orderable: false, 
                     searchable: false,
                     render: function(data, type, full, meta){
-                    return `
-                        <a href="#" class="edit-user" data-id="${full.id}" data-toggle="modal" data-target="#addEditUserModal"><i class="fa fa-edit"></i> Edit</a> |
-                        <a href="#" class="delete-user" data-id="${full.id}"><i class="fa fa-trash"></i> Delete</a> |
-                        <a href="{{ url('/admin/users/${full.id}/checkinout') }}" class="show-checkinout" data-id="${full.id}"><i class="fa fa-eye"></i> Show Check-In/Out</a>
-                    `;
-                } 
-
-                },
+                        return `
+                            <a href="#" class="edit-user" data-id="${full.id}" data-toggle="modal" data-target="#addEditUserModal"><i class="fa fa-edit"></i> Edit</a> |
+                            <a href="#" class="delete-user" data-id="${full.id}"><i class="fa fa-trash"></i> Delete</a> |
+                            <a href="{{ url('/admin/users/${full.id}/checkinout') }}" class="show-checkinout" data-id="${full.id}"><i class="fa fa-eye"></i> Show Check-In/Out</a>
+                        `;
+                    }
+                }
             ]
         });
 
@@ -174,38 +174,39 @@
                 }
             });
         });
+
+        // Delete user confirmation
         $(document).on('click', '.delete-user', function(){
-    var userId = $(this).data('id');
-    
-    // Use SweetAlert2 for confirmation
-    Swal.fire({
-        title: 'Are you sure?',
-        text: 'You will not be able to recover this user!',
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
-        console.log(result);
-        if (result.value) {
-            // If user confirms deletion, send AJAX request
-            $.ajax({
-                url: '/admin/users/delete/' + userId,
-                type: 'DELETE',
-                success: function(response) {
-                    // Reload the DataTable after deletion
-                    adminTable.ajax.reload();
-                    // Show success message
-                    toastr.success(response.message);
-                },
-                error: function(xhr, status, error) {
-                    toastr.error(xhr.responseJSON.message);
+            var userId = $(this).data('id');
+            
+            // Use SweetAlert2 for confirmation
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'You will not be able to recover this user!',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.value) {
+                    // If user confirms deletion, send AJAX request
+                    $.ajax({
+                        url: '/admin/users/delete/' + userId,
+                        type: 'DELETE',
+                        success: function(response) {
+                            // Reload the DataTable after deletion
+                            adminTable.ajax.reload();
+                            // Show success message
+                            toastr.success(response.message);
+                        },
+                        error: function(xhr, status, error) {
+                            toastr.error('Failed to delete user.');
+                        }
+                    });
                 }
             });
-        }
+        });
     });
-});
-});
 </script>
 @endsection

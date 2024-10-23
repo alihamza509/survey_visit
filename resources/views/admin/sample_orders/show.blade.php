@@ -15,6 +15,7 @@
         </div>
     </div>
 </div>
+
 <section id="basic-datatable">
     <div class="row">
         <div class="col-12">
@@ -30,9 +31,9 @@
                                 <p><strong>Comments of Meeting:</strong> {{ $sampleOrder->comments_of_meeting }}</p>
                                 <!-- Add more fields as needed -->
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 text-center">
                                 @if ($sampleOrder->photo_of_product)
-                                <img src="{{ asset('storage/' . $sampleOrder->photo_of_product) }}" alt="Product Photo" class="img-fluid">
+                                <img src="{{ asset('storage/' . $sampleOrder->photo_of_product) }}" alt="Product Photo" class="img-fluid img-thumbnail" style="max-width: 100%; height: auto; max-height: 300px;">
                                 @else
                                 <p>No photo available</p>
                                 @endif

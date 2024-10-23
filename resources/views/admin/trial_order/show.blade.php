@@ -23,21 +23,27 @@
     <div class="card-content">
         <div class="card-body">
             <div class="row">
-                <div class="col-md-6">
+                <!-- Left Column for Text Details -->
+                <div class="col-md-6 col-sm-12 mb-2">
                     <p><strong>Shop Name:</strong> {{ $trialOrder->shop->shop_name }}</p>
                     <p><strong>User Name:</strong> {{ $trialOrder->user->name }}</p>
                     <p><strong>Types of Order:</strong> {{ $trialOrder->types_of_order }}</p>
                     <p><strong>Potential Order Horizon:</strong> {{ $trialOrder->potential_order_horizon }}</p>
                 </div>
-                <div class="col-md-6">
+
+                <!-- Right Column for Image and Additional Text -->
+                <div class="col-md-6 col-sm-12 mb-2 text-center">
                     <p><strong>Order Quantity:</strong> {{ $trialOrder->order_quantity }}</p>
                     <p><strong>Order Delivery Calendar:</strong> {{ $trialOrder->order_delivery_calendar }}</p>
                     <p><strong>Meeting Discussion Summary:</strong> {{ $trialOrder->meeting_discussion_summary }}</p>
                     <p><strong>Photo Display of Battu:</strong></p>
                     @if($trialOrder->photo_display_of_battu)
-                        <img src="{{ asset('storage/' . $trialOrder->photo_display_of_battu) }}" alt="Photo Display of Battu" style="max-width: 100%;">
+                        <img src="{{ asset('storage/' . $trialOrder->photo_display_of_battu) }}" 
+                             alt="Photo Display of Battu" 
+                             class="img-fluid img-thumbnail" 
+                             style="max-width: 100%; height: auto; max-height: 400px;">
                     @else
-                        No Photo
+                        <p>No Photo</p>
                     @endif
                 </div>
             </div>

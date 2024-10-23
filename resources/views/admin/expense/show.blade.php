@@ -26,35 +26,39 @@
                 <div class="card-content">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table">
-                                <tr>
-                                    <th>ID</th>
-                                    <td>{{ $expense->id }}</td>
-                                </tr>
-                                <tr>
-                                    <th>User</th>
-                                    <td>{{ $expense->user->name }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Date of Expense</th>
-                                    <td>{{ $expense->date_of_expense }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Expense Detail</th>
-                                    <td>{{ $expense->expense_detail }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Invoice Photo</th>
-                                    <td>
-                                        @if($expense->invoice_photo)
-                                            <img src="{{ asset('storage/' . $expense->invoice_photo) }}" alt="Invoice Photo" style="max-width: 200px;">
-                                        @else
-                                            No photo available
-                                        @endif
-                                    </td>
-                                </tr>
+                            <table class="table table-bordered table-striped">
+                                <tbody>
+                                    <tr>
+                                        <th>ID</th>
+                                        <td>{{ $expense->id }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>User</th>
+                                        <td>{{ $expense->user->name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Date of Expense</th>
+                                        <td>{{ $expense->date_of_expense }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Expense Detail</th>
+                                        <td>{{ $expense->expense_detail }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Invoice Photo</th>
+                                        <td>
+                                            @if($expense->invoice_photo)
+                                                <img src="{{ asset('storage/' . $expense->invoice_photo) }}" alt="Invoice Photo" class="img-fluid img-thumbnail" style="max-width: 200px;">
+                                            @else
+                                                <p>No photo available</p>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                </tbody>
                             </table>
-                            <a href="{{ route('admin.expenses.index') }}" class="btn btn-primary">Back to Expenses</a>
+                            <div class="mt-2">
+                                <a href="{{ route('admin.expenses.index') }}" class="btn btn-primary">Back to Expenses</a>
+                            </div>
                         </div>
                     </div>
                 </div>
